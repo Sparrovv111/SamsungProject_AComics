@@ -155,7 +155,7 @@ public class MainFragment extends Fragment {
         // Добавьте другие TextView по мере необходимости
 
         // Устанавливаем данные пользователя
-        username.setText(user.getDisplayName() != null ? user.getDisplayName() : "No username");
+        username.setText(user.getDisplayName() != null ? user.getDisplayName() : user.getEmail());
         email.setText("Почта: " + user.getEmail());
 
         // Форматируем дату регистрации

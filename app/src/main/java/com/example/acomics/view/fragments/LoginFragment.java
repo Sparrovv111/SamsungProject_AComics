@@ -25,7 +25,7 @@ public class LoginFragment extends Fragment implements AuthManager.AuthListener 
     private LinearLayout loginLayout, registerLayout, forgotPasswordLayout, confirmEmailLayout, changePasswordLayout;
     private EditText usernameEditText, passwordEditText, emailRegisterEditText, passwordRegisterEditText,
             confirmPasswordRegisterEditText, emailForgotPasswordEditText, confirmationCodeEditText,
-            currentPasswordEditText, newPasswordEditText, confirmNewPasswordEditText;
+            currentPasswordEditText, newPasswordEditText, confirmNewPasswordEditText, usernameRegisterEditText;
     private TextView registerTextView, forgotPasswordTextView, resendCodeTextView;
     private Button registerButton, resetPasswordButton, confirmEmailButton, changePasswordButton, backButton;
     private Button loginButton;
@@ -80,6 +80,7 @@ public class LoginFragment extends Fragment implements AuthManager.AuthListener 
 
         // Инициализация регистрации
         emailRegisterEditText = rootView.findViewById(R.id.editTextEmailRegister);
+        usernameRegisterEditText = rootView.findViewById(R.id.editTextUsernameRegister);
         passwordRegisterEditText = rootView.findViewById(R.id.editTextPasswordRegister);
         confirmPasswordRegisterEditText = rootView.findViewById(R.id.editTextConfirmPasswordRegister);
         registerButton = rootView.findViewById(R.id.buttonRegister);
@@ -123,10 +124,13 @@ public class LoginFragment extends Fragment implements AuthManager.AuthListener 
 
         // Регистрация пользователя
         registerButton.setOnClickListener(v -> {
+            String username = usernameRegisterEditText.getText().toString().trim(); // Получаем username
             String email = emailRegisterEditText.getText().toString().trim();
             String password = passwordRegisterEditText.getText().toString().trim();
             String confirmPassword = confirmPasswordRegisterEditText.getText().toString().trim();
-            authManager.registerUser(email, password, confirmPassword);
+
+            // Передаем username в AuthManager
+            authManager.registerUser(username, email, password, confirmPassword);
         });
 
         // Сброс пароля
@@ -168,7 +172,7 @@ public class LoginFragment extends Fragment implements AuthManager.AuthListener 
 
     // Реализация AuthListener
     @Override
-    public void onRegistrationSuccess(String email) {
+    public void onRegistrationSuccess(String email, String username) {
         userEmailForConfirmation = email;
         showScreen(Screen.CONFIRM_EMAIL);
     }

@@ -13,6 +13,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class AuthManager {
     private final FirebaseAuth mAuth;
@@ -28,8 +29,8 @@ public class AuthManager {
         this.authListener = authListener;
     }
 
-    public void registerUser(String email, String password, String confirmPassword) {
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
+    public void registerUser(String username, String email, String password, String confirmPassword) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
             showToast("Заполните все поля");
             return;
         }
@@ -44,15 +45,34 @@ public class AuthManager {
             return;
         }
 
+        if (username.length() < 3) {
+            showToast("Имя пользователя должно быть не менее 3 символов");
+            return;
+        }
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
-                            sendVerificationEmail(user);
-                            if (authListener != null) {
-                                authListener.onRegistrationSuccess(email);
-                            }
+                            // Обновляем профиль с username
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(username)
+                                    .build();
+
+                            user.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(updateTask -> {
+                                        if (updateTask.isSuccessful()) {
+                                            sendVerificationEmail(user);
+                                            if (authListener != null) {
+                                                authListener.onRegistrationSuccess(email, username); // Добавлен username
+                                            }
+                                        } else {
+                                            if (authListener != null) {
+                                                authListener.onAuthError(updateTask.getException().getMessage());
+                                            }
+                                        }
+                                    });
                         }
                     } else {
                         if (authListener != null) {
@@ -221,7 +241,7 @@ public class AuthManager {
     }
 
     public interface AuthListener {
-        void onRegistrationSuccess(String email);
+        void onRegistrationSuccess(String email, String username);
         void onLoginSuccess();
         void onEmailVerificationRequired(String email);
         void onPasswordResetSent();
