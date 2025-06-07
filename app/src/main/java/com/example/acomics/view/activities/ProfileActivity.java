@@ -9,6 +9,10 @@ import com.example.acomics.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class ProfileActivity extends AppCompatActivity {
 
     @Override
@@ -27,12 +31,26 @@ public class ProfileActivity extends AppCompatActivity {
         TextView emailView = findViewById(R.id.email);
         TextView registrationDateView = findViewById(R.id.date_of_register);
 
-        usernameView.setText(user.getDisplayName() != null ?user.getDisplayName() : "No username");
-
+        usernameView.setText(user.getDisplayName() != null ? user.getDisplayName() : "No username");
         emailView.setText("Почта: " + user.getEmail());
 
-        registrationDateView.setText("Дата регистрации: " + new java.util.Date(user.getMetadata().getCreationTimestamp()).toString());
+        // Форматируем дату регистрации
+        long creationTimestamp = user.getMetadata().getCreationTimestamp();
+        String formattedDate = formatRegistrationDate(creationTimestamp);
+        registrationDateView.setText("Дата регистрации: " + formattedDate);
+    }
 
-        // Здесь можно добавить загрузку дополнительных данных из базы
+    private String formatRegistrationDate(long timestamp) {
+        try {
+            // Создаем объект Date из timestamp
+            Date date = new Date(timestamp);
+
+            // Форматируем дату в нужный формат
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            return sdf.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Неизвестная дата";
+        }
     }
 }

@@ -20,6 +20,10 @@ import com.example.acomics.view.activities.ProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class MainFragment extends Fragment {
 
     // Layouts for different screens
@@ -39,7 +43,6 @@ public class MainFragment extends Fragment {
 
     private View rootView;
 
-    // Current screen
     private enum Screen {
         HOME,
         LIBRARY,
@@ -75,7 +78,6 @@ public class MainFragment extends Fragment {
         chatsButton = rootView.findViewById(R.id.button_chats);
         profileButton = rootView.findViewById(R.id.button_profile);
 
-        // Перенесено ПОСЛЕ инициализации!
         showScreen(Screen.HOME);
         setupListeners();
 
@@ -121,11 +123,9 @@ public class MainFragment extends Fragment {
     }
 
     private void openProfileScreen() {
-        // Вариант 1: Открываем активность профиля
-        startActivity(new Intent(getActivity(), ProfileActivity.class));
-
-        // Вариант 2: Показываем фрагмент профиля внутри MainFragment
-        // showScreen(Screen.PROFILE);
+        // Вместо запуска Activity показываем экран профиля внутри фрагмента
+        showScreen(Screen.PROFILE);
+        fillProfileData(); // Заполняем данные профиля
     }
 
     private void openLoginScreen() {
@@ -145,18 +145,33 @@ public class MainFragment extends Fragment {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) return;
 
+        // Получаем корневой View профиля
         View profileView = profileLayout.getChildAt(0);
         if (profileView == null) return;
 
         TextView username = profileView.findViewById(R.id.username);
         TextView email = profileView.findViewById(R.id.email);
         TextView registrationDate = profileView.findViewById(R.id.date_of_register);
+        // Добавьте другие TextView по мере необходимости
 
+        // Устанавливаем данные пользователя
         username.setText(user.getDisplayName() != null ? user.getDisplayName() : "No username");
-
         email.setText("Почта: " + user.getEmail());
 
-        registrationDate.setText("Дата регистрации: " + new java.util.Date(user.getMetadata().getCreationTimestamp()).toString());
+        // Форматируем дату регистрации
+        long creationTimestamp = user.getMetadata().getCreationTimestamp();
+        String formattedDate = formatRegistrationDate(creationTimestamp);
+        registrationDate.setText("Дата регистрации: " + formattedDate);
+    }
+
+    private String formatRegistrationDate(long timestamp) {
+        try {
+            Date date = new Date(timestamp);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            return sdf.format(date);
+        } catch (Exception e) {
+            return "Неизвестная дата";
+        }
     }
 
     private void showScreen(Screen screen) {
