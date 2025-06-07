@@ -1,14 +1,18 @@
 package com.example.acomics.view.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +20,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.acomics.R;
 import com.example.acomics.view.activities.AuthActivity;
-import com.example.acomics.view.activities.ProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -49,6 +52,7 @@ public class MainFragment extends Fragment {
         CHATS,
         NEWS,
         TITLE,
+        LOGIN,
         PROFILE
     }
 
@@ -133,7 +137,7 @@ public class MainFragment extends Fragment {
         startActivity(new Intent(getActivity(), AuthActivity.class));
 
         // Вариант 2: Показываем фрагмент входа внутри MainFragment
-        // showScreen(Screen.LOGIN);
+        showScreen(Screen.LOGIN);
     }
 
     private void showTitleScreen() {
@@ -149,10 +153,30 @@ public class MainFragment extends Fragment {
         View profileView = profileLayout.getChildAt(0);
         if (profileView == null) return;
 
+        // Находим кнопку меню
+        Button menuButton = profileView.findViewById(R.id.p_button_menu);
+
+        PopupMenu popupMenu = new PopupMenu(requireContext(), menuButton);
+
+        popupMenu.inflate(R.menu.profile_menu);
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.menu_edit_profile) {
+                openEditProfile();
+                return true;
+            } else if (id == R.id.menu_logout) {
+                logoutUser();
+                return true;
+            }
+            return false;
+        });
+
+        menuButton.setOnClickListener(v -> popupMenu.show());
+
         TextView username = profileView.findViewById(R.id.username);
         TextView email = profileView.findViewById(R.id.email);
         TextView registrationDate = profileView.findViewById(R.id.date_of_register);
-        // Добавьте другие TextView по мере необходимости
 
         // Устанавливаем данные пользователя
         username.setText(user.getDisplayName() != null ? user.getDisplayName() : user.getEmail());
@@ -162,6 +186,20 @@ public class MainFragment extends Fragment {
         long creationTimestamp = user.getMetadata().getCreationTimestamp();
         String formattedDate = formatRegistrationDate(creationTimestamp);
         registrationDate.setText("Дата регистрации: " + formattedDate);
+    }
+
+    private void openEditProfile() {
+        // Реализация перехода на экран редактирования профиля
+        Toast.makeText(requireContext(), "Редактирование профиля", Toast.LENGTH_SHORT).show();
+    }
+
+    private void logoutUser() {
+        FirebaseAuth.getInstance().signOut();
+        // Переход на экран входа
+        if (getActivity() != null) {
+            getActivity().finish();
+            startActivity(new Intent(getActivity(), AuthActivity.class));
+        }
     }
 
     private String formatRegistrationDate(long timestamp) {

@@ -10,8 +10,11 @@ import androidx.fragment.app.Fragment;
 import com.example.acomics.R;
 import com.example.acomics.view.fragments.MainFragment;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
