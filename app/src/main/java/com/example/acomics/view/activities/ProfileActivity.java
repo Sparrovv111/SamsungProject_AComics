@@ -1,5 +1,6 @@
 package com.example.acomics.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -21,9 +22,12 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            displayUserProfile(user);
+        if (user == null) {
+            startActivity(new Intent(this, AuthActivity.class));
+            finish();
+            return;
         }
+        displayUserProfile(user);
     }
 
     private void displayUserProfile(FirebaseUser user) {

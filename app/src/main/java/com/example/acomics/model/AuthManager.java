@@ -147,20 +147,12 @@ public class AuthManager {
     public void checkEmailVerification(String email) {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
-            // Если пользователь вышел, пытаемся войти снова
-            mAuth.signInWithEmailAndPassword(email, "temporaryPassword")
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            verifyEmailAfterReload();
-                        } else {
-                            if (authListener != null) {
-                                authListener.onAuthError("Ошибка проверки подтверждения");
-                            }
-                        }
-                    });
-        } else {
-            verifyEmailAfterReload();
+            if (authListener != null) {
+                authListener.onAuthError("Пользователь не авторизован");
+            }
+            return;
         }
+        verifyEmailAfterReload();
     }
 
     private void verifyEmailAfterReload() {

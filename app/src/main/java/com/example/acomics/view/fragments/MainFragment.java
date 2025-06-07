@@ -195,10 +195,9 @@ public class MainFragment extends Fragment {
 
     private void logoutUser() {
         FirebaseAuth.getInstance().signOut();
-        // Переход на экран входа
         if (getActivity() != null) {
-            getActivity().finish();
             startActivity(new Intent(getActivity(), AuthActivity.class));
+            getActivity().finish();
         }
     }
 

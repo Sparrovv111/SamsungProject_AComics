@@ -1,6 +1,7 @@
 package com.example.acomics.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.acomics.R;
 import com.example.acomics.model.AuthManager;
+import com.example.acomics.view.activities.MainActivity;
 
 public class LoginFragment extends Fragment implements AuthManager.AuthListener {
 
@@ -179,8 +181,11 @@ public class LoginFragment extends Fragment implements AuthManager.AuthListener 
 
     @Override
     public void onLoginSuccess() {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
         if (getActivity() != null) {
-            getActivity().onBackPressed();
+            getActivity().finish();
         }
     }
 
@@ -200,8 +205,11 @@ public class LoginFragment extends Fragment implements AuthManager.AuthListener 
         if (currentScreen == Screen.REGISTER) {
             showScreen(Screen.LOGIN);
         } else {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             if (getActivity() != null) {
-                getActivity().onBackPressed();
+                getActivity().finish();
             }
         }
     }
