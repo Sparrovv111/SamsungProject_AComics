@@ -1,6 +1,8 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <application android:allowBackup="true"
+    <application
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -9,29 +11,41 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AComics"
         tools:targetApi="31">
-        <activity android:name=".view.activities.AuthActivity"
+        <activity
+            android:name=".view.activities.AuthActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".view.activities.ReadActivity"
+        <activity
+            android:name=".view.activities.ReadActivity"
             android:exported="false"/>
-        <activity android:name=".view.activities.EditProfileActivity"
+        <activity
+            android:name=".view.activities.EditProfileActivity"
             android:exported="false"/>
-        <activity android:name=".view.activities.ProfileActivity"
+        <activity
+            android:name=".view.activities.ProfileActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".view.activities.TitleActivity"
+        <activity
+            android:name=".view.activities.TitleActivity"
             android:exported="false"/>
-        <activity android:name=".view.activities.NewsActivity"
+        <activity
+            android:name=".view.activities.NewsActivity"
             android:exported="false"/>
-        <activity android:name=".view.activities.ChatsActivity"
+        <activity
+            android:name=".view.activities.ChatsActivity"
             android:exported="false"/>
-        <activity android:name=".view.activities.ChatActivity"
+        <activity
+            android:name=".view.activities.ChatActivity"
             android:exported="false"/>
-        <activity android:name=".view.activities.LibraryActivity"
+        <activity
+            android:name=".view.activities.LibraryActivity"
             android:exported="false"/>
-        <activity android:name=".view.activities.MainActivity"
+        <activity
+            android:name=".view.activities.MainActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action
+                    android:name="android.intent.action.MAIN"/>
+                <category
+                    android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>
