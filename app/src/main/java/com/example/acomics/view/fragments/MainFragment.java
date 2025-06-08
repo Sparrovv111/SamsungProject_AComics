@@ -211,6 +211,8 @@ public class MainFragment extends Fragment {
         }
     }
 
+
+
     private void showScreen(Screen screen) {
         if (homeLayout == null || profileLayout == null) return;
         // Скрываем  все экраны

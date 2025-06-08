@@ -1,9 +1,7 @@
 package com.example.acomics.view.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +52,7 @@ public class LoginFragment extends Fragment implements AuthManager.AuthListener 
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
         initViews(rootView);
@@ -255,7 +252,6 @@ public class LoginFragment extends Fragment implements AuthManager.AuthListener 
                 changePasswordLayout.setVisibility(View.VISIBLE);
                 break;
         }
-
         currentScreen = screen;
     }
 }
