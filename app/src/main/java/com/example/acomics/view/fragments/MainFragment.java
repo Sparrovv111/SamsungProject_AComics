@@ -161,6 +161,7 @@ public class MainFragment extends Fragment {
         Button menuButton = profileView.findViewById(R.id.p_button_menu);
 
         PopupMenu popupMenu = new PopupMenu(requireContext(), menuButton);
+
         popupMenu.inflate(R.menu.profile_menu);
 
         popupMenu.setOnMenuItemClickListener(item -> {
