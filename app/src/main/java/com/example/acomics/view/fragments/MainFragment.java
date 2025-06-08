@@ -1,6 +1,7 @@
 package com.example.acomics.view.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.acomics.R;
 import com.example.acomics.view.activities.AuthActivity;
+import com.example.acomics.view.activities.EditProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -28,6 +30,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainFragment extends Fragment {
+
+    private static final int EDIT_PROFILE_REQUEST = 1001;
 
     // Layouts for different screens
     private FrameLayout homeLayout;
@@ -157,12 +161,14 @@ public class MainFragment extends Fragment {
         Button menuButton = profileView.findViewById(R.id.p_button_menu);
 
         PopupMenu popupMenu = new PopupMenu(requireContext(), menuButton);
-
         popupMenu.inflate(R.menu.profile_menu);
 
         popupMenu.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.menu_edit_profile) {
+            if (id == R.id.menu_refresh) {
+                refreshProfile();
+                return true;
+            } else if (id == R.id.menu_edit_profile) {
                 openEditProfile();
                 return true;
             } else if (id == R.id.menu_logout) {
@@ -174,9 +180,34 @@ public class MainFragment extends Fragment {
 
         menuButton.setOnClickListener(v -> popupMenu.show());
 
+        // Обновляем данные профиля
+        updateProfileViews(profileView, user);
+    }
+
+    private void refreshProfile() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) return;
+
+        user.reload().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                View profileView = profileLayout.getChildAt(0);
+                if (profileView != null) {
+                    updateProfileViews(profileView, user);
+                    Toast.makeText(requireContext(), "Профиль обновлен", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(requireContext(),
+                        "Ошибка обновления: " + task.getException().getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateProfileViews(View profileView, FirebaseUser user) {
         TextView username = profileView.findViewById(R.id.username);
         TextView email = profileView.findViewById(R.id.email);
         TextView registrationDate = profileView.findViewById(R.id.date_of_register);
+        TextView aboutMe = profileView.findViewById(R.id.about_me);
 
         // Устанавливаем данные пользователя
         username.setText(user.getDisplayName() != null ? user.getDisplayName() : user.getEmail());
@@ -186,11 +217,14 @@ public class MainFragment extends Fragment {
         long creationTimestamp = user.getMetadata().getCreationTimestamp();
         String formattedDate = formatRegistrationDate(creationTimestamp);
         registrationDate.setText("Дата регистрации: " + formattedDate);
+
+        // Здесь можно добавить обновление других полей
+        aboutMe.setText("О себе: " + (user.getDisplayName() != null ? user.getDisplayName() + " любит читать комиксы!" : "----"));
     }
 
     private void openEditProfile() {
-        // Реализация перехода на экран редактирования профиля
-        Toast.makeText(requireContext(), "Редактирование профиля", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+        startActivityForResult(intent, EDIT_PROFILE_REQUEST);
     }
 
     private void logoutUser() {
@@ -211,6 +245,13 @@ public class MainFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_PROFILE_REQUEST && resultCode == Activity.RESULT_OK) {
+            refreshProfile();
+        }
+    }
 
 
     private void showScreen(Screen screen) {

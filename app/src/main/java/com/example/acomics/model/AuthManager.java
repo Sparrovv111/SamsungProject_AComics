@@ -232,6 +232,50 @@ public class AuthManager {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    public void updateProfile(String newUsername, String newEmail, AuthListener listener) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            listener.onAuthError("Пользователь не авторизован");
+            return;
+        }
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(newUsername)
+                .build();
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        updateUserEmail(user, newEmail, listener);
+                    } else {
+                        listener.onAuthError(task.getException().getMessage());
+                    }
+                });
+    }
+
+    private void updateUserEmail(FirebaseUser user, String newEmail, AuthListener listener) {
+        if (newEmail.equals(user.getEmail())) {
+            listener.onProfileUpdated();
+            return;
+        }
+
+        user.updateEmail(newEmail)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        user.sendEmailVerification()
+                                .addOnCompleteListener(verificationTask -> {
+                                    if (verificationTask.isSuccessful()) {
+                                        listener.onEmailUpdateSent();
+                                    } else {
+                                        listener.onAuthError(verificationTask.getException().getMessage());
+                                    }
+                                });
+                    } else {
+                        listener.onAuthError(task.getException().getMessage());
+                    }
+                });
+    }
+
     public interface AuthListener {
         void onRegistrationSuccess(String email, String username);
         void onLoginSuccess();
@@ -241,5 +285,7 @@ public class AuthManager {
         void onEmailNotVerified();
         void onPasswordChanged();
         void onAuthError(String errorMessage);
+        void onProfileUpdated();
+        void onEmailUpdateSent();
     }
 }

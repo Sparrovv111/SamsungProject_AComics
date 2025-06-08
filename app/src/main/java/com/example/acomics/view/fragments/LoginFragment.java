@@ -226,6 +226,16 @@ public class LoginFragment extends Fragment implements AuthManager.AuthListener 
         Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onProfileUpdated() {
+
+    }
+
+    @Override
+    public void onEmailUpdateSent() {
+
+    }
+
     private void showScreen(Screen screen) {
         // Скрыть все экраны
         loginLayout.setVisibility(View.GONE);

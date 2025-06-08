@@ -2,6 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_refresh"
+        android:title="Обновить профиль"
+        android:icon="@drawable/icon_refresh" />
+
+    <item
         android:id="@+id/menu_edit_profile"
         android:title="Редактировать профиль"
         android:icon="@drawable/icon_edit" />
