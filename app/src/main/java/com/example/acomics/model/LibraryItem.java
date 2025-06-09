@@ -6,7 +6,7 @@ public class LibraryItem {
     private String pictureURL;
     private String t_id;
 
-    public LibraryItem() {}  // Обязательный пустой конструктор
+    public LibraryItem() {}
 
     public LibraryItem(String id, String name, String pictureURL, String t_id) {
         this.id = id;

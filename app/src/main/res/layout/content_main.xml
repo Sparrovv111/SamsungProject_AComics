@@ -248,7 +248,7 @@
                                 android:fontFamily="@font/d_ccmonologous"
                                 android:text="Nnnn"
                                 android:textSize="16sp"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/white"/>
                         </FrameLayout>
                         <FrameLayout
                             android:id="@+id/p_ch_2"
@@ -270,7 +270,7 @@
                                 android:fontFamily="@font/d_ccmonologous"
                                 android:text="Nnnn"
                                 android:textSize="16sp"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/white"/>
                         </FrameLayout>
                         <FrameLayout
                             android:id="@+id/p_ch_3"
@@ -292,7 +292,7 @@
                                 android:fontFamily="@font/d_ccmonologous"
                                 android:text="Nnnn"
                                 android:textSize="16sp"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/white"/>
                         </FrameLayout>
                         <FrameLayout
                             android:layout_width="wrap_content"
@@ -314,7 +314,7 @@
                                 android:fontFamily="@font/d_ccmonologous"
                                 android:text="Nnnn"
                                 android:textSize="16sp"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/white"/>
                         </FrameLayout>
                         <FrameLayout
                             android:layout_width="wrap_content"
@@ -336,7 +336,7 @@
                                 android:fontFamily="@font/d_ccmonologous"
                                 android:text="Nnnn"
                                 android:textSize="16sp"
-                                android:textColor="@color/black"/>
+                                android:textColor="@color/white"/>
                         </FrameLayout>
                     </LinearLayout>
                 </HorizontalScrollView>

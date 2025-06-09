@@ -10,7 +10,7 @@
         android:id="@+id/home_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!-- Используем include для основного контента -->
+
         <include layout="@layout/content_main"/>
     </FrameLayout>
 
@@ -21,7 +21,6 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <!-- Include your library screen layout here -->
         <include layout="@layout/activity_library" />
 
     </FrameLayout>
@@ -33,7 +32,6 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <!-- Include your chats screen layout here -->
         <include layout="@layout/activity_chats" />
 
     </FrameLayout>
@@ -45,7 +43,6 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <!-- Include your news screen layout here -->
         <include layout="@layout/activity_news" />
 
     </FrameLayout>
@@ -57,7 +54,6 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <!-- Include your title screen layout here -->
         <include layout="@layout/activity_title" />
 
     </FrameLayout>
@@ -68,7 +64,6 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <!-- Include your title screen layout here -->
         <include layout="@layout/activity_profile" />
 
     </FrameLayout>
@@ -84,7 +79,6 @@
             android:layout_alignParentBottom="true"
             android:background="@color/blue">
 
-            <!-- Существующие кнопки -->
             <Button
                 android:id="@+id/button_home"
                 android:layout_width="46dp"
@@ -117,7 +111,6 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="140dp"
                 android:background="@drawable/icon_use" />
-
         </FrameLayout>
     </RelativeLayout>
 

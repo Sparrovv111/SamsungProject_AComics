@@ -2,11 +2,9 @@ package com.example.acomics.view.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.acomics.R;
-import com.example.acomics.model.DatabaseManager;
 import com.example.acomics.model.LastChapter;
 import com.example.acomics.model.LibraryItem;
 import com.example.acomics.model.NextChapter;
@@ -30,7 +27,6 @@ import com.example.acomics.model.Title;
 import com.example.acomics.model.User;
 import com.example.acomics.view.activities.AuthActivity;
 import com.example.acomics.view.activities.EditProfileActivity;
-import com.example.acomics.view.activities.TitleActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -57,7 +53,7 @@ public class MainFragment extends Fragment {
 
     private String currentTitleId;
 
-    // Layouts for different screens
+    // Layouts для разных экранов
     private FrameLayout homeLayout;
     private FrameLayout libraryLayout;
     private FrameLayout chatsLayout;
@@ -65,7 +61,7 @@ public class MainFragment extends Fragment {
     private FrameLayout titleLayout;
     private FrameLayout profileLayout;
 
-    // Navigation buttons
+    // Кнопки навигации
     private Button homeButton;
     private Button libraryButton;
     private Button chatsButton;
@@ -167,10 +163,6 @@ public class MainFragment extends Fragment {
 
         // Вариант 2: Показываем фрагмент входа внутри MainFragment
         showScreen(Screen.LOGIN);
-    }
-
-    private void showTitleScreen() {
-        showScreen(Screen.TITLE);
     }
 
     @SuppressLint("SetTextI18n")
@@ -368,7 +360,7 @@ public class MainFragment extends Fragment {
 
         // Загружаем данные из Firestore
         db.collection("next_chapters")
-                .limit(3) // Ограничиваем 3 элементами
+                .limit(3)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
@@ -411,6 +403,86 @@ public class MainFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+        db.collection("library")
+                .limit(3)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        List<LibraryItem> items = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            LibraryItem item = document.toObject(LibraryItem.class);
+                            item.setId(document.getId());
+                            items.add(item);
+                        }
+                        updatePopularViews(homeView, items);
+                    } else {
+                        Toast.makeText(requireContext(),
+                                "Ошибка загрузки популярных комиксов",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void updatePopularViews(View homeView, List<LibraryItem> items) {
+        // Получаем FrameLayout для каждого комикса
+        FrameLayout pCh1 = homeView.findViewById(R.id.p_ch_1);
+        FrameLayout pCh2 = homeView.findViewById(R.id.p_ch_2);
+        FrameLayout pCh3 = homeView.findViewById(R.id.p_ch_3);
+
+        FrameLayout[] frames = {pCh1, pCh2, pCh3};
+
+        for (int i = 0; i < frames.length; i++) {
+            if (i < items.size()) {
+                LibraryItem item = items.get(i);
+
+                // Получаем элементы внутри FrameLayout
+                ImageView imageView = frames[i].findViewById(getImageId(i));
+                TextView textView = frames[i].findViewById(getTextId(i));
+
+                // Устанавливаем название комикса
+                textView.setText(item.getName());
+
+                // Загружаем изображение
+                if (item.getPictureURL() != null && !item.getPictureURL().isEmpty()) {
+                    Picasso.get()
+                            .load(item.getPictureURL())
+                            .placeholder(R.drawable.none)
+                            .error(R.drawable.none)
+                            .into(imageView);
+                } else {
+                    imageView.setImageResource(R.drawable.none);
+                }
+
+                // Добавляем обработчик нажатия
+                frames[i].setOnClickListener(v -> {
+                    if (item.getT_id() != null && !item.getT_id().isEmpty()) {
+                        showTitleScreen(item.getT_id());
+                    }
+                });
+            } else {
+                // Если элементов меньше 3, скрываем лишние
+                frames[i].setVisibility(View.GONE);
+            }
+        }
+    }
+
+    // Вспомогательные методы для получения ID элементов
+    private int getImageId(int index) {
+        switch (index) {
+            case 0: return R.id.p_comics_background_1;
+            case 1: return R.id.p_comics_background_2;
+            case 2: return R.id.p_comics_background_3;
+            default: return -1;
+        }
+    }
+
+    private int getTextId(int index) {
+        switch (index) {
+            case 0: return R.id.p_comics_text_1;
+            case 1: return R.id.p_comics_text_2;
+            case 2: return R.id.p_comics_text_3;
+            default: return -1;
+        }
     }
 
     private void loadLibraryData() {
@@ -600,12 +672,6 @@ public class MainFragment extends Fragment {
                 }
             });
         }
-    }
-
-    private void openTitleActivity(String t_id) {
-        Intent intent = new Intent(getActivity(), TitleActivity.class);
-        intent.putExtra("t_id", t_id);
-        startActivity(intent);
     }
 
     @Override

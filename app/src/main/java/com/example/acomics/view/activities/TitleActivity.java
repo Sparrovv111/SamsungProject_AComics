@@ -1,7 +1,6 @@
 package com.example.acomics.view.activities;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

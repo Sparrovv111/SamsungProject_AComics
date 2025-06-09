@@ -66,7 +66,7 @@ public class AuthManager {
 
                                             sendVerificationEmail(user);
                                             if (authListener != null) {
-                                                authListener.onRegistrationSuccess(email, username); // Добавлен username
+                                                authListener.onRegistrationSuccess(email, username);
                                             }
                                         } else {
                                             if (authListener != null) {

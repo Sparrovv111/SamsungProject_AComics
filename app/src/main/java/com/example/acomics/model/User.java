@@ -22,10 +22,7 @@ public class User {
     private int viewsCount;
     private String position;
 
-    // Обязательный пустой конструктор для Firebase
-    public User() {
-        // Пустой конструктор требуется для Firebase Data Snapshot
-    }
+    public User() {}
 
     // Основной конструктор при регистрации
     public User(String uid, String email, String username) {
@@ -148,7 +145,6 @@ public class User {
         this.position = position;
     }
 
-    // Дополнительные полезные методы
     @Exclude
     public void updateLastLogin() {
         this.lastLogin = System.currentTimeMillis();

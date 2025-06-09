@@ -213,7 +213,6 @@ public class LoginFragment extends Fragment implements AuthManager.AuthListener 
 
     @Override
     public void onEmailNotVerified() {
-        // Можно показать сообщение
     }
 
     @Override

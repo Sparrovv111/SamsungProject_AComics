@@ -6,7 +6,7 @@ public class NextChapter {
     private String name;
     private String pictureURL;
 
-    public NextChapter() {}  // Обязательный пустой конструктор
+    public NextChapter() {}
 
     public NextChapter(String id, String name, String pictureURL) {
         this.id = id;

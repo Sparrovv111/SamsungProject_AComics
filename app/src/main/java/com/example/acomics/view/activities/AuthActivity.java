@@ -3,7 +3,6 @@ package com.example.acomics.view.activities;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.acomics.R;
 import com.example.acomics.view.fragments.LoginFragment;

@@ -11,7 +11,6 @@ public class Title {
     private String tags;
     private String type;
 
-    // Обязательный пустой конструктор
     public Title() {}
 
     // Геттеры и сеттеры для всех полей
