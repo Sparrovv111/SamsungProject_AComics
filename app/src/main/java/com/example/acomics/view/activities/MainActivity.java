@@ -39,6 +39,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment instanceof MainFragment) {
+            ((MainFragment) fragment).handleBackPressed();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void loadMainFragment() {
         Fragment mainFragment = new MainFragment();
         getSupportFragmentManager().beginTransaction()

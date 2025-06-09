@@ -11,11 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.acomics.R;
+import com.example.acomics.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -24,6 +30,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +51,34 @@ public class EditProfileActivity extends AppCompatActivity {
         buttonSave = findViewById(R.id.buttonSaveProfile);
         buttonChangePassword = findViewById(R.id.buttonChangePassword);
 
-        // Заполняем текущие данные
-        editUsername.setText(currentUser.getDisplayName());
-        editEmail.setText(currentUser.getEmail());
+        // Инициализация ссылки на данные пользователя
+        userRef = FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child(currentUser.getUid());
+
+        // Загружаем текущие данные
+        loadUserData();
 
         buttonSave.setOnClickListener(v -> updateProfile());
         buttonChangePassword.setOnClickListener(v -> openChangePassword());
 
         findViewById(R.id.button_back).setOnClickListener(v -> onBackPressed());
+    }
+
+    private void loadUserData() {
+        // Получаем данные из Firebase Auth
+        editUsername.setText(currentUser.getDisplayName());
+        editEmail.setText(currentUser.getEmail());
+
+        // Получаем данные "О себе" из базы данных
+        userRef.child("aboutMe").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+                String aboutMe = task.getResult().getValue(String.class);
+                if (aboutMe != null) {
+                    editAboutMe.setText(aboutMe);
+                }
+            }
+        });
     }
 
     private void updateProfile() {
@@ -72,11 +99,23 @@ public class EditProfileActivity extends AppCompatActivity {
         currentUser.updateProfile(profileUpdates)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        // Обновляем "О себе" в базе данных
+                        updateAboutMe(aboutMe);
                         updateEmail(email);
-                        setResult(RESULT_OK);
                     } else {
                         Toast.makeText(EditProfileActivity.this,
                                 "Ошибка обновления имени: " + task.getException().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void updateAboutMe(String aboutMe) {
+        userRef.child("aboutMe").setValue(aboutMe)
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(EditProfileActivity.this,
+                                "Ошибка сохранения данных: " + task.getException().getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -92,6 +131,9 @@ public class EditProfileActivity extends AppCompatActivity {
         currentUser.updateEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        // Обновляем email в базе данных
+                        userRef.child("email").setValue(email);
+
                         // Отправляем письмо подтверждения
                         currentUser.sendEmailVerification()
                                 .addOnCompleteListener(verificationTask -> {

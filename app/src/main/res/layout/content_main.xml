@@ -5,9 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal">
-
-
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,100 +21,9 @@
                     android:id="@+id/title_picture"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/none"/>
+                    app:srcCompat="@drawable/title_picture"/>
             </FrameLayout>
             <ImageView
-                android:id="@+id/separator_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:srcCompat="@drawable/separator"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/text_title_update"
-                    android:layout_width="160dp"
-                    android:layout_height="22dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/d_ccmonologous"
-                    android:text="@string/updates"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/u_comics_background_1"
-                            android:layout_width="118dp"
-                            android:layout_height="160dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="10dp"
-                            app:srcCompat="@drawable/none"/>
-                        <TextView
-                            android:id="@+id/u_comics_text_1"
-                            android:layout_width="118dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_gravity="bottom"
-                            android:fontFamily="@font/d_ccmonologous"
-                            android:text="Nnnn X-XX"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"/>
-                    </FrameLayout>
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/u_comics_background_2"
-                            android:layout_width="118dp"
-                            android:layout_height="160dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            app:srcCompat="@drawable/none"/>
-                        <TextView
-                            android:id="@+id/u_comics_text_2"
-                            android:layout_width="118dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_gravity="bottom"
-                            android:fontFamily="@font/d_ccmonologous"
-                            android:text="Nnnn X-XX"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"/>
-                    </FrameLayout>
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/u_comics_background_3"
-                            android:layout_width="118dp"
-                            android:layout_height="160dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            app:srcCompat="@drawable/none"/>
-                        <TextView
-                            android:id="@+id/u_comics_text_3"
-                            android:layout_width="118dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_gravity="bottom"
-                            android:fontFamily="@font/d_ccmonologous"
-                            android:text="Nnnn X-XX"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"/>
-                    </FrameLayout>
-                </LinearLayout>
-            </LinearLayout>
-            <ImageView
-                android:id="@+id/separator_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -140,6 +46,98 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
                     <FrameLayout
+                        android:id="@+id/n_ch_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/u_comics_background_1"
+                            android:layout_width="118dp"
+                            android:layout_height="160dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            app:srcCompat="@drawable/none"/>
+                        <TextView
+                            android:id="@+id/u_comics_text_1"
+                            android:layout_width="118dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_gravity="bottom"
+                            android:fontFamily="@font/d_ccmonologous"
+                            android:text="Nnnn X-XX"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"/>
+                    </FrameLayout>
+                    <FrameLayout
+                        android:id="@+id/n_ch_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/u_comics_background_2"
+                            android:layout_width="118dp"
+                            android:layout_height="160dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            app:srcCompat="@drawable/none"/>
+                        <TextView
+                            android:id="@+id/u_comics_text_2"
+                            android:layout_width="118dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_gravity="bottom"
+                            android:fontFamily="@font/d_ccmonologous"
+                            android:text="Nnnn X-XX"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"/>
+                    </FrameLayout>
+                    <FrameLayout
+                        android:id="@+id/n_ch_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/u_comics_background_3"
+                            android:layout_width="118dp"
+                            android:layout_height="160dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            app:srcCompat="@drawable/none"/>
+                        <TextView
+                            android:id="@+id/u_comics_text_3"
+                            android:layout_width="118dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_gravity="bottom"
+                            android:fontFamily="@font/d_ccmonologous"
+                            android:text="Nnnn X-XX"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"/>
+                    </FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@drawable/separator"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="22dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/d_ccmonologous"
+                    android:text="@string/updates"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"/>
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <FrameLayout
+                        android:id="@+id/u_ch_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <ImageView
@@ -158,9 +156,10 @@
                             android:fontFamily="@font/d_ccmonologous"
                             android:text="Nnnn X-XX"
                             android:textSize="16sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/white"/>
                     </FrameLayout>
                     <FrameLayout
+                        android:id="@+id/u_ch_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <ImageView
@@ -179,9 +178,10 @@
                             android:fontFamily="@font/d_ccmonologous"
                             android:text="Nnnn X-XX"
                             android:textSize="16sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/white"/>
                     </FrameLayout>
                     <FrameLayout
+                        android:id="@+id/u_ch_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                         <ImageView
@@ -200,7 +200,7 @@
                             android:fontFamily="@font/d_ccmonologous"
                             android:text="Nnnn X-XX"
                             android:textSize="16sp"
-                            android:textColor="@color/black"/>
+                            android:textColor="@color/white"/>
                     </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -229,6 +229,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
                         <FrameLayout
+                            android:id="@+id/p_ch_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                             <ImageView
@@ -250,6 +251,7 @@
                                 android:textColor="@color/black"/>
                         </FrameLayout>
                         <FrameLayout
+                            android:id="@+id/p_ch_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                             <ImageView
@@ -271,6 +273,7 @@
                                 android:textColor="@color/black"/>
                         </FrameLayout>
                         <FrameLayout
+                            android:id="@+id/p_ch_3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                             <ImageView
@@ -293,7 +296,8 @@
                         </FrameLayout>
                         <FrameLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
                             <ImageView
                                 android:id="@+id/p_comics_background_4"
                                 android:layout_width="118dp"
@@ -314,7 +318,8 @@
                         </FrameLayout>
                         <FrameLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
                             <ImageView
                                 android:id="@+id/p_comics_background_5"
                                 android:layout_width="118dp"
@@ -387,33 +392,6 @@
                             android:fontFamily="@font/v_ccwildwordslower"/>
                         <TextView
                             android:id="@+id/n_text_1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="6dp"
-                            android:layout_marginEnd="6dp"
-                            android:layout_marginTop="20dp"
-                            android:textSize="12sp"
-                            android:textColor="@color/lite_black"
-                            android:text="@string/stopper"
-                            android:fontFamily="@font/v_ccwildwordslower"/>
-                    </FrameLayout>
-                    <FrameLayout
-                        android:layout_width="362dp"
-                        android:layout_height="70dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/background_rectangle">
-                        <TextView
-                            android:id="@+id/n_text_name_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:layout_marginTop="2dp"
-                            android:textSize="16sp"
-                            android:textColor="@color/black"
-                            android:text="@string/name"
-                            android:fontFamily="@font/v_ccwildwordslower"/>
-                        <TextView
-                            android:id="@+id/n_text_2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginStart="6dp"

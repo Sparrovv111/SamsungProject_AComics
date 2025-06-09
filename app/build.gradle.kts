@@ -44,8 +44,10 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation (libs.firebase.firestore)
     implementation (libs.firebase.database.v2000)
+    implementation (libs.firebase.firestore.v2491)
+    implementation (libs.firebase.firestore)
+    implementation (libs.picasso)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)

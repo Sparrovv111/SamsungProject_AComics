@@ -17,6 +17,10 @@ public class User {
     private long registrationDate;
     private long lastLogin;
     private boolean emailVerified;
+    private String aboutMe;
+    private int likesCount;
+    private int viewsCount;
+    private String position;
 
     // Обязательный пустой конструктор для Firebase
     public User() {
@@ -31,6 +35,10 @@ public class User {
         this.registrationDate = System.currentTimeMillis();
         this.lastLogin = System.currentTimeMillis();
         this.emailVerified = false;
+        this.aboutMe = "Расскажите о себе";
+        this.likesCount = 0;
+        this.viewsCount = 0;
+        this.position = "Читатель";
     }
 
     // Метод для преобразования в Map (для Firebase)
@@ -44,6 +52,10 @@ public class User {
         result.put("registrationDate", registrationDate);
         result.put("lastLogin", lastLogin);
         result.put("emailVerified", emailVerified);
+        result.put("aboutMe", aboutMe);
+        result.put("likesCount", likesCount);
+        result.put("viewsCount", viewsCount);
+        result.put("position", position);
         return result;
     }
 
@@ -102,6 +114,38 @@ public class User {
 
     public void setEmailVerified(boolean emailVerified) {
         this.emailVerified = emailVerified;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
+    }
+
+    public int getViewsCount() {
+        return viewsCount;
+    }
+
+    public void setViewsCount(int viewsCount) {
+        this.viewsCount = viewsCount;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     // Дополнительные полезные методы

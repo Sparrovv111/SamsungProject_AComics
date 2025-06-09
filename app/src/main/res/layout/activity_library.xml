@@ -54,21 +54,21 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
                     <ImageView
-                        android:id="@+id/n_comics1"
+                        android:id="@+id/l_ch_1"
                         android:layout_width="118dp"
                         android:layout_height="160dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
                         app:srcCompat="@drawable/none"/>
                     <ImageView
-                        android:id="@+id/n_comics2"
+                        android:id="@+id/l_ch_2"
                         android:layout_width="118dp"
                         android:layout_height="160dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         app:srcCompat="@drawable/none"/>
                     <ImageView
-                        android:id="@+id/n_comics3"
+                        android:id="@+id/l_ch_3"
                         android:layout_width="118dp"
                         android:layout_height="160dp"
                         android:layout_marginStart="10dp"

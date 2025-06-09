@@ -9,15 +9,19 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AuthManager {
     private final FirebaseAuth mAuth;
     private final Context context;
     private AuthListener authListener;
+    private final DatabaseReference databaseReference;
 
     public AuthManager(Context context) {
         this.context = context;
         this.mAuth = FirebaseAuth.getInstance();
+        this.databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     public void setAuthListener(AuthListener authListener) {
@@ -58,6 +62,8 @@ public class AuthManager {
                             user.updateProfile(profileUpdates)
                                     .addOnCompleteListener(updateTask -> {
                                         if (updateTask.isSuccessful()) {
+                                            saveUserToDatabase(user, username);
+
                                             sendVerificationEmail(user);
                                             if (authListener != null) {
                                                 authListener.onRegistrationSuccess(email, username); // Добавлен username
@@ -73,6 +79,16 @@ public class AuthManager {
                         if (authListener != null) {
                             authListener.onAuthError(task.getException().getMessage());
                         }
+                    }
+                });
+    }
+
+    private void saveUserToDatabase(FirebaseUser user, String username) {
+        User newUser = new User(user.getUid(), user.getEmail(), username);
+        databaseReference.child("users").child(user.getUid()).setValue(newUser.toMap())
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        showToast("Ошибка сохранения данных пользователя");
                     }
                 });
     }
