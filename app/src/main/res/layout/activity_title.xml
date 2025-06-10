@@ -5,7 +5,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activities.TitleActivity">
+    tools:context=".view.activities.TitleActivity"
+    android:clickable="true"
+    android:focusable="true"
+    android:onClick="checkEventInterception">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -434,4 +437,19 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/b_read"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="70dp"
+        android:visibility="gone"
+        android:text="@string/read"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:background="@drawable/button_bacground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

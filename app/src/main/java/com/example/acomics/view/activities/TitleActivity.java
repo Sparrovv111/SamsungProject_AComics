@@ -1,12 +1,15 @@
 package com.example.acomics.view.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,38 +19,130 @@ import androidx.core.content.ContextCompat;
 import com.example.acomics.R;
 import com.example.acomics.model.Title;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 public class TitleActivity extends AppCompatActivity {
+    private static final String TAG = "TitleActivity";
     private FirebaseFirestore db;
-    private Button bInfo, bChapters, bChats;
+    private Button bInfo, bChapters, bChats, bRead;
     private LinearLayout infoPage, chaptersPage, chatsPage;
+    private String t_id;
+    private boolean hasChapters = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_title);
 
-        // Инициализация элементов UI
-        bInfo = findViewById(R.id.b_info);
-        bChapters = findViewById(R.id.b_chapters);
-        bChats = findViewById(R.id.b_chats);
-        infoPage = findViewById(R.id.info_page);
-        chaptersPage = findViewById(R.id.chapters_page);
-        chatsPage = findViewById(R.id.chats_page);
+        // Инициализация кнопки чтения
+        bRead = findViewById(R.id.b_read);
+        bRead.setVisibility(View.GONE); // По умолчанию скрыта
 
-        // Установка обработчиков кнопок
-        setupTabListeners();
+        // Проверяем, найдена ли кнопка
+        if (bRead == null) {
+            Log.e(TAG, "b_read button not found!");
+        } else {
+            Log.d(TAG, "b_read button initialized");
+        }
 
         db = FirebaseFirestore.getInstance();
-        String t_id = getIntent().getStringExtra("t_id");
+        t_id = getIntent().getStringExtra("t_id");
 
         if (t_id != null && !t_id.isEmpty()) {
+            // Загружаем данные тайтла
             loadTitleData(t_id);
+
+            // Проверяем наличие глав
+            checkChaptersExistence();
         } else {
-            Toast.makeText(this, "t_id not provided", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "t_id is null or empty");
+            Toast.makeText(this, "Ошибка: t_id не предоставлен", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        // Обработчик кнопки чтения
+        bRead.setOnClickListener(v -> {
+            Log.d(TAG, "bRead clicked");
+            if (hasChapters) {
+                openFirstChapter();
+            } else {
+                Toast.makeText(this, "Нет доступных глав", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void checkChaptersExistence() {
+        Log.d(TAG, "Checking chapters for t_id: " + t_id);
+
+        db.collection("chapters")
+                .whereEqualTo("t_id", t_id)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        hasChapters = !task.getResult().isEmpty();
+                        Log.d(TAG, "Chapters exist: " + hasChapters);
+
+                        runOnUiThread(() -> {
+                            if (bRead != null) {
+                                bRead.setVisibility(hasChapters ? View.VISIBLE : View.GONE);
+                                bRead.setEnabled(true); // Убедимся, что кнопка включена
+
+                                // Временная проверка: меняем цвет для видимости
+                                bRead.setBackgroundColor(Color.GREEN);
+                            }
+                        });
+                    } else {
+                        Log.e(TAG, "Error checking chapters", task.getException());
+                    }
+                });
+    }
+
+    private void openFirstChapter() {
+        Log.d(TAG, "Opening first chapter for t_id: " + t_id);
+
+        // Показать индикатор загрузки
+        ProgressBar progressBar = new ProgressBar(this);
+        progressBar.setVisibility(View.VISIBLE);
+
+        db.collection("chapters")
+                .whereEqualTo("t_id", t_id)
+                .orderBy("chapter_number", Query.Direction.ASCENDING)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    progressBar.setVisibility(View.GONE);
+
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        QueryDocumentSnapshot document = (QueryDocumentSnapshot) task.getResult().getDocuments().get(0);
+
+                        if (document.contains("imageURL") && document.contains("chapter_number")) {
+                            String imageURL = document.getString("imageURL");
+                            Long chapterNumberLong = document.getLong("chapter_number");
+                            int chapterNumber = chapterNumberLong != null ? chapterNumberLong.intValue() : 1;
+
+                            openReadActivity(imageURL, chapterNumber);
+                        } else {
+                            Log.e(TAG, "Chapter document missing required fields");
+                            Toast.makeText(this, "Ошибка формата главы", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Log.e(TAG, "Error loading first chapter", task.getException());
+                        Toast.makeText(this, "Ошибка загрузки главы", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void openReadActivity(String imageURL, int chapterNumber) {
+        Log.d(TAG, "Opening ReadActivity with chapter: " + chapterNumber);
+
+        Intent intent = new Intent(this, ReadActivity.class);
+        intent.putExtra("imageURL", imageURL);
+        intent.putExtra("chapterNumber", chapterNumber);
+        intent.putExtra("t_id", t_id);
+        startActivity(intent);
     }
 
     private void setupTabListeners() {

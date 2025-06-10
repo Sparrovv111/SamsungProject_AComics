@@ -54,6 +54,7 @@
         <include layout="@layout/activity_title" />
     </FrameLayout>
 
+    <!-- Profile Screen -->
     <FrameLayout
         android:id="@+id/profile_layout"
         android:layout_width="match_parent"
@@ -67,13 +68,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
             android:background="@color/blue">
-
             <Button
                 android:id="@+id/button_home"
                 android:layout_width="46dp"
@@ -81,7 +80,6 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="50dp"
                 android:background="@drawable/icon_home_active" />
-
             <Button
                 android:id="@+id/button_library"
                 android:layout_width="46dp"
@@ -89,7 +87,6 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="140dp"
                 android:background="@drawable/icon_library" />
-
             <Button
                 android:id="@+id/button_chats"
                 android:layout_width="46dp"
@@ -97,8 +94,6 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="50dp"
                 android:background="@drawable/icon_chats" />
-
-            <!-- Новая кнопка профиля -->
             <Button
                 android:id="@+id/button_profile"
                 android:layout_width="46dp"
